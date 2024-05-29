@@ -1,45 +1,95 @@
+let segments = [];
+
+class Segment {
+  constructor(x, y, w, h, col) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.col = col;
+    this.isMouseClicked = false;
+    this.isMouseOver = false;
+  }
+
+  draw() {
+    if (!this.isMouseClicked) {
+      fill(this.col);
+      if (this.isMouseOver) {
+        stroke(255, 0, 0); // red stroke
+      } else {
+        noStroke();
+      }
+      rectMode(CENTER);
+      rect(this.x, this.y, this.w, this.h);
+    }
+  }
+
+  //Based on the feedback from Week 7 quiz
+  checkMouseOver() {
+    if (mouseX > this.x - this.w / 2 && mouseX < this.x + this.w / 2 &&
+        mouseY > this.y - this.h / 2 && mouseY < this.y + this.h / 2) {
+      this.isMouseOver = true;
+    } else {
+      this.isMouseOver = false;
+    }
+  }
+
+  mouseClicked() {
+    if (this.isMouseOver) {
+      this.isMouseClicked = true;
+    }
+  }
+
+  randomMove() {
+    this.x = random(width);
+    this.y = random(height);
+  }
+
+  randomColor() {
+    this.col = color(random(255), random(255), random(255));
+  }
+}
+
 function setup() {
   createCanvas(min(windowWidth, windowHeight), min(windowWidth, windowHeight));
+  initializeSegments();
   draw();
 }
 
-function draw() {
-  background(242, 242, 240); // white background
-
-  let h1 = 18 * height / 800;
-   // Define the parameters for the yellow horizontal line
+function initializeSegments() {
   let yellowLines1 = [
-    { x: 0, y: 18 * height / 800, w: width, h: h1 },
-    { x: 0, y: 127 * height / 800, w: width, h: h1 },
-    { x: 0, y: 280 * height / 800, w: width, h: h1 },
-    { x: 0, y: 346 * height / 800, w: width, h: h1 },
-    { x: 0, y: 450 * height / 800, w: width, h: h1 },
-    { x: 0, y: 500 * height / 800, w: width, h: h1 },
-    { x: 0, y: 550 * height / 800, w: 65 * width / 800, h: h1 },
-    { x: 50 * width / 800, y: 580 * height / 800, w: 430 * width / 800, h: h1 },
-    { x: 0, y: 620 * height / 800, w: 65 * width / 800, h: h1 },
-    { x: 672 * width / 800, y: 640 * height / 800, w: 115 * width / 800, h: h1 },
-    { x: 0, y: 682 * height / 800, w: width, h: h1 },
-    { x: 0, y: 708 * height / 800, w: 65 * width / 800, h: h1 },
-    { x: 0, y: 756 * height / 800, w: width, h: h1 },
+    { x: 0, y: 18 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 127 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 280 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 346 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 450 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 500 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 550 * height / 800, w: 65 * width / 800, h: 18 * height / 800 },
+    { x: 50 * width / 800, y: 580 * height / 800, w: 430 * width / 800, h: 18 * height / 800 },
+    { x: 0, y: 620 * height / 800, w: 65 * width / 800, h: 18 * height / 800 },
+    { x: 672 * width / 800, y: 640 * height / 800, w: 115 * width / 800, h: 18 * height / 800 },
+    { x: 0, y: 682 * height / 800, w: width, h: 18 * height / 800 },
+    { x: 0, y: 708 * height / 800, w: 65 * width / 800, h: 18 * height / 800 },
+    { x: 0, y: 756 * height / 800, w: width, h: 18 * height / 800 }
   ];
+  yellowLines1.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(234, 212, 51))));
 
-  let w1 = 18 * width / 800;
   let yellowLines2 = [
-    { x: 20 * width / 800, y: 0, w: w1, h: 298 * height / 800 },
-    { x: 48 * width / 800, y: 0, w: w1, h: height },
-    { x: 92 * width / 800, y: 0, w: w1, h: 774 * height / 800 },
-    { x: 180 * width / 800, y: 0, w: w1, h: height },
-    { x: 430 * width / 800, y: 0, w: w1, h: height },
-    { x: 464 * width / 800, y: 0, w: w1, h: 298 * height / 800 },
-    { x: 464 * width / 800, y: 346 * height / 800, w: w1, h: 454 * height / 800 },
-    { x: 520 * width / 800, y: 346 * height / 800, w: w1, h: 172 * height / 800 },
-    { x: 672 * width / 800, y: 0, w: w1, h: height },
-    { x: 703 * width / 800, y: 0, w: w1, h: 298 * height / 800 },
-    { x: 738 * width / 800, y: 0, w: w1, h: 364 * height / 800 },
-    { x: 738 * width / 800, y: 500 * height / 800, w: w1, h: 156 * height / 800 },
-    { x: 769 * width / 800, y: 0, w: w1, h: height },
+    { x: 20 * width / 800, y: 0, w: 18 * width / 800, h: 298 * height / 800 },
+    { x: 48 * width / 800, y: 0, w: 18 * width / 800, h: height },
+    { x: 92 * width / 800, y: 0, w: 18 * width / 800, h: 774 * height / 800 },
+    { x: 180 * width / 800, y: 0, w: 18 * width / 800, h: height },
+    { x: 430 * width / 800, y: 0, w: 18 * width / 800, h: height },
+    { x: 464 * width / 800, y: 0, w: 18 * width / 800, h: 298 * height / 800 },
+    { x: 464 * width / 800, y: 346 * height / 800, w: 18 * width / 800, h: 454 * height / 800 },
+    { x: 520 * width / 800, y: 346 * height / 800, w: 18 * width / 800, h: 172 * height / 800 },
+    { x: 672 * width / 800, y: 0, w: 18 * width / 800, h: height },
+    { x: 703 * width / 800, y: 0, w: 18 * width / 800, h: 298 * height / 800 },
+    { x: 738 * width / 800, y: 0, w: 18 * width / 800, h: 364 * height / 800 },
+    { x: 738 * width / 800, y: 500 * height / 800, w: 18 * width / 800, h: 156 * height / 800 },
+    { x: 769 * width / 800, y: 0, w: 18 * width / 800, h: height }
   ];
+  yellowLines2.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(234, 212, 51))));
 
   let yellowPart = [
     { x: 110 * width / 800, y: 47 * height / 800, w: 70 * width / 800, h: 25 * height / 800 },
@@ -49,15 +99,16 @@ function draw() {
     { x: 230 * width / 800, y: 364 * height / 800, w: 53 * width / 800, h: 86 * height / 800 },
     { x: 327 * width / 800, y: 298 * height / 800, w: 54 * width / 800, h: 152 * height / 800 },
     { x: 690 * width / 800, y: 387 * height / 800, w: 79 * width / 800, h: 40 * height / 800 },
-    { x: 690 * width / 800, y: 578 * height / 800, w: 79 * width / 800, h: 40 * height / 800 },
+    { x: 690 * width / 800, y: 578 * height / 800, w: 79 * width / 800, h: 40 * height / 800 }
   ];
+  yellowPart.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(234, 212, 51))));
 
   let yellowPart1 = [
     { x: 240 * width / 800, y: 400 * height / 800, w: 33 * width / 800, h: 27 * height / 800 },
-    { x: 545 * width / 800, y: 208 * height / 800, w: 37 * width / 800, h: 28 * height / 800 },
+    { x: 545 * width / 800, y: 208 * height / 800, w: 37 * width / 800, h: 28 * height / 800 }
   ];
+  yellowPart1.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(234, 212, 51))));
 
-  // Draw the red part
   let redPart = [
     { x: 124 * width / 800, y: 36 * height / 800, w: 36 * width / 800, h: 91 * height / 800 },
     { x: 209 * width / 800, y: 36 * height / 800, w: 58 * width / 800, h: 68 * height / 800 },
@@ -67,10 +118,10 @@ function draw() {
     { x: 559 * width / 800, y: 364 * height / 800, w: 68 * width / 800, h: 115 * height / 800 },
     { x: 721 * width / 800, y: 387 * height / 800, w: 18 * width / 800, h: 40 * height / 800 },
     { x: 690 * width / 800, y: 604 * height / 800, w: 48 * width / 800, h: 36 * height / 800 },
-    { x: 360 * width / 800, y: 756 * height / 800, w: 52 * width / 800, h: 38 * height / 800 },
+    { x: 360 * width / 800, y: 756 * height / 800, w: 52 * width / 800, h: 38 * height / 800 }
   ];
+  redPart.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(174, 56, 42))));
 
-  // Draw the blue part
   let bluePart = [
     { x: 66 * width / 800, y: 158 * height / 800, w: 44 * width / 800, h: 42 * height / 800 },
     { x: 66 * width / 800, y: 535 * height / 800, w: 44 * width / 800, h: 45 * height / 800 },
@@ -78,11 +129,10 @@ function draw() {
     { x: 525 * width / 800, y: 145 * height / 800, w: 72 * width / 800, h: 41 * height / 800 },
     { x: 525 * width / 800, y: 250 * height / 800, w: 72 * width / 800, h: 30 * height / 800 },
     { x: 721 * width / 800, y: 82 * height / 800, w: 48 * width / 800, h: 27 * height / 800 },
-    { x: 690 * width / 800, y: 534 * height / 800, w: 48 * width / 800, h: 44 * height / 800 },
+    { x: 690 * width / 800, y: 534 * height / 800, w: 48 * width / 800, h: 44 * height / 800 }
   ];
+  bluePart.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(72, 106, 188))));
 
-
-  // Draw the grey part
   let greyPart = [
     { x: 92 * width / 800, y: 47 * height / 800, w: 18 * width / 800, h: 25 * height / 800 },
     { x: 124 * width / 800, y: 72 * height / 800, w: 36 * width / 800, h: 19 * height / 800 },
@@ -100,11 +150,10 @@ function draw() {
     { x: 573 * width / 800, y: 386 * height / 800, w: 42 * width / 800, h: 35 * height / 800 },
     { x: 578 * width / 800, y: 450 * height / 800, w: 40 * width / 800, h: 18 * height / 800 },
     { x: 559 * width / 800, y: 479 * height / 800, w: 68 * width / 800, h: 21 * height / 800 },
-    { x: 137 * width / 800, y: 635 * height / 800, w: 23 * width / 800, h: 20 * height / 800 },
-  ]
+    { x: 137 * width / 800, y: 635 * height / 800, w: 23 * width / 800, h: 20 * height / 800 }
+  ];
+  greyPart.forEach(part => segments.push(new Segment(part.x, part.y, part.w, part.h, color(217, 216, 212))));
 
-
-  // Draw the grey squares
   let greySquare = [
     { x: 162 * width / 800, y: 18 * height / 800 },
     { x: 257 * width / 800, y: 18 * height / 800 },
@@ -235,10 +284,10 @@ function draw() {
     { x: 286 * width / 800, y: 756 * height / 800 },
     { x: 242 * width / 800, y: 756 * height / 800 },
     { x: 30 * width / 800, y: 756 * height / 800 },
-    { x: 672 * width / 800, y: 774 * height / 800 },
-  ]
+    { x: 672 * width / 800, y: 774 * height / 800 }
+  ];
+  greySquare.forEach(part => segments.push(new Segment(part.x, part.y, 18 * width / 800, 18 * height / 800, color(217, 216, 212))));
 
-  // Draw the red squares
   let redSquare = [
     { x: 48 * width / 800, y: 0 },
     { x: 180 * width / 800, y: 0 },
@@ -320,10 +369,10 @@ function draw() {
     { x: 143 * width / 800, y: 756 * height / 800 },
     { x: 493 * width / 800, y: 756 * height / 800 },
     { x: 715 * width / 800, y: 756 * height / 800 },
-    { x: 769 * width / 800, y: 756 * height / 800 },
-  ]
+    { x: 769 * width / 800, y: 756 * height / 800 }
+  ];
+  redSquare.forEach(part => segments.push(new Segment(part.x, part.y, 18 * width / 800, 18 * height / 800, color(174, 56, 42))));
 
-  // Draw the bule squares
   let blueSquare = [
     { x: 20 * width / 800, y: 18 * height / 800 },
     { x: 20 * width / 800, y: 73 * height / 800 },
@@ -389,7 +438,7 @@ function draw() {
     { x: 672 * width / 800, y: 756 * height / 800 },
     { x: 672 * width / 800, y: 640 * height / 800 },
     { x: 672 * width / 800, y: 590 * height / 800 },
-    { x: 672 * width / 800, y: 500 * height / 800 },
+    { x: 672 * width / 800, y: 500 / 800 },
     { x: 672 * width / 800, y: 396 * height / 800 },
     { x: 672 * width / 800, y: 280 * height / 800 },
     { x: 672 * width / 800, y: 237 * height / 800 },
@@ -406,93 +455,45 @@ function draw() {
     { x: 769 * width / 800, y: 394 * height / 800 },
     { x: 769 * width / 800, y: 178 * height / 800 },
     { x: 769 * width / 800, y: 127 * height / 800 },
-    { x: 756 * width / 800, y: 280 * height / 800 },
-  ]
-
-  // Fill all the components with the colour as named
-  drawGraph(yellowLines1, color(234, 212, 51));
-  drawGraph(yellowLines2, color(234, 212, 51));
-  drawGraph(yellowPart, color(234, 212, 51));
-  drawGraph(redPart, color(174, 56, 42));
-  drawGraph(bluePart, color(72, 106, 188));
-  drawGraph(greyPart, color(217, 216, 212));
-  drawSquare(greySquare, color(217, 216, 212));
-  drawSquare(redSquare, color(174, 56, 42));
-  drawSquare(blueSquare, color(72, 106, 188));
-  drawGraph(yellowPart1, color(234, 212, 51));
+    { x: 756 * width / 800, y: 280 * height / 800 }
+  ];
+  blueSquare.forEach(part => segments.push(new Segment(part.x, part.y, 18 * width / 800, 18 * height / 800, color(72, 106, 188))));
 }
 
-// Draw a set of rectangular shapes
-function drawGraph(graphs, col) {
-  fill(col);// Set the fill colour to `col`.
-  noStroke();
-  for (let graph of graphs) {
-    rect(graph.x, graph.y, graph.w, graph.h);
+function draw() {
+  background(242, 242, 240); // Set the background color to light gray
+  for (let segment of segments) {
+    segment.draw();
   }
 }
 
-// Draw a set of square shapes
-function drawSquare(squares, col) {
-  fill(col);
-  noStroke();
-  for (let square of squares) {
-    rect(square.x, square.y, 18 * width / 800, 18 * height / 800);
+function mouseMoved() {
+  for (let segment of segments) {
+    segment.checkMouseOver();
+  }
+}
+
+function mouseClicked() {
+  for (let segment of segments) {
+    segment.mouseClicked();
+    if (segment.isMouseOver) {
+      if (segment.col.levels[0] == 234 && segment.col.levels[1] == 212 && segment.col.levels[2] == 51) { // yellow part
+        segment.randomMove();
+      } else { // blue and red part
+        segment.randomColor();
+      }
+    }
+  }
+}
+
+function mouseReleased() {
+  for (let segment of segments) {
+    segment.isMouseClicked = false;
   }
 }
 
 function windowResized() {
   resizeCanvas(min(windowWidth, windowHeight), min(windowWidth, windowHeight));
+  initializeSegments();
   draw();
-}
-
-//Individual Task:User Input:Incorporate mouse or keyboard inputs for animation.
-let segments = [];
-
-class Segment {
-  constructor(x, y, w, h, col) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    this.col = col;
-    this.isMouseClicked = false;
-    this.isMouseOver = false;
-  }
-
-  draw() {
-    if (!this.isMouseClicked) {
-      fill(this.col);
-      if (this.isMouseOver) {
-        stroke(255, 0, 0); // 红色描边
-      } else {
-        noStroke();
-      }
-      rectMode(CENTER);
-      rect(this.x, this.y, this.w, this.h);
-    }
-  }
-
-  checkMouseOver() {
-    if (mouseX > this.x - this.w / 2 && mouseX < this.x + this.w / 2 &&
-        mouseY > this.y - this.h / 2 && mouseY < this.y + this.h / 2) {
-      this.isMouseOver = true;
-    } else {
-      this.isMouseOver = false;
-    }
-  }
-
-  mouseClicked() {
-    if (this.isMouseOver) {
-      this.isMouseClicked = true;
-    }
-  }
-
-  randomMove() {
-    this.x = random(width);
-    this.y = random(height);
-  }
-
-  randomColor() {
-    this.col = color(random(255), random(255), random(255));
-  }
 }
