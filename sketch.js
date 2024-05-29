@@ -446,3 +446,17 @@ function windowResized() {
 }
 
 //Individual Task:User Input:Incorporate mouse or keyboard inputs for animation.
+let segments = [];
+
+class Segment {
+  constructor(x, y, w, h, col) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.col = col;
+    this.isMouseClicked = false;
+    this.isMouseOver = false;
+  }
+}
+
