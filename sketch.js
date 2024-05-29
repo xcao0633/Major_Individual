@@ -458,5 +458,41 @@ class Segment {
     this.isMouseClicked = false;
     this.isMouseOver = false;
   }
-}
 
+  draw() {
+    if (!this.isMouseClicked) {
+      fill(this.col);
+      if (this.isMouseOver) {
+        stroke(255, 0, 0); // 红色描边
+      } else {
+        noStroke();
+      }
+      rectMode(CENTER);
+      rect(this.x, this.y, this.w, this.h);
+    }
+  }
+
+  checkMouseOver() {
+    if (mouseX > this.x - this.w / 2 && mouseX < this.x + this.w / 2 &&
+        mouseY > this.y - this.h / 2 && mouseY < this.y + this.h / 2) {
+      this.isMouseOver = true;
+    } else {
+      this.isMouseOver = false;
+    }
+  }
+
+  mouseClicked() {
+    if (this.isMouseOver) {
+      this.isMouseClicked = true;
+    }
+  }
+
+  randomMove() {
+    this.x = random(width);
+    this.y = random(height);
+  }
+
+  randomColor() {
+    this.col = color(random(255), random(255), random(255));
+  }
+}
